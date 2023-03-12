@@ -1,0 +1,129 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+interface Bill << interface >> {
+  + addProducts(String, double, int): void
+  + hasProduct(String): boolean
+  + productIndex(String): int
+  + it(): ProductIteratorClass
+   customerName: String
+   billID: int
+   totalBillPrice: double
+   numberOfProducts: int
+}
+class BillClass {
+  + BillClass(String, int): 
+  - billID: int
+  + it(): ProductIteratorClass
+  + addProducts(String, double, int): void
+  + hasProduct(String): boolean
+  - grow(): void
+  + productIndex(String): int
+   customerName: String
+   billID: int
+   totalBillPrice: double
+   numberOfProducts: int
+}
+interface BillIterator << interface >> {
+  + hasNext(): boolean
+  + next(): BillClass
+}
+class BillIteratorClass {
+  + BillIteratorClass(BillClass[], int): 
+  + hasNext(): boolean
+  + next(): BillClass
+}
+interface CashRegister << interface >> {
+  + getBillCustomerName(int): String
+  + searchBillIndex(int): int
+  + billIt(): BillIteratorClass
+  + addProductToBill(int, String, double, int): void
+  + hasBill(int): boolean
+  + getTotalBillPrice(int): double
+  + addBill(String): void
+  + it(int): ProductIteratorClass
+  + removeBill(int): void
+   lastBillID: int
+}
+class CashRegisterClass {
+  + CashRegisterClass(): 
+  + getBillCustomerName(int): String
+  + searchBillIndex(int): int
+  + hasBill(int): boolean
+  + billIt(): BillIteratorClass
+  + addBill(String): void
+  + removeBill(int): void
+  + getTotalBillPrice(int): double
+  + addProductToBill(int, String, double, int): void
+  + it(int): ProductIteratorClass
+  - grow(): void
+   lastBillID: int
+}
+interface Customer << interface >> {
+   customerName: String
+}
+class CustomerClass {
+  + CustomerClass(String): 
+  - customerName: String
+   customerName: String
+}
+class Main {
+  + Main(): 
+  + main(String[]): void
+  - listAllBillsOption(CashRegisterClass): void
+  - exitOption(): boolean
+  - removeBillOption(Scanner, CashRegisterClass): void
+  - listBillOption(Scanner, CashRegisterClass): void
+  - removeProductOption(Scanner, CashRegisterClass): void
+  - addProductOption(Scanner, CashRegisterClass): void
+  - addBillOption(Scanner, CashRegisterClass): void
+  - executeOptions(Scanner, CashRegisterClass): void
+  - showOptions(): void
+}
+interface Product << interface >> {
+   productQuantity: int
+   productName: String
+   totalPrice: double
+   productPrice: double
+}
+class ProductClass {
+  + ProductClass(String, double, int): 
+  - productName: String
+  - productQuantity: int
+  - productPrice: double
+   productQuantity: int
+   productName: String
+   totalPrice: double
+   productPrice: double
+}
+interface ProductIterator << interface >> {
+  + next(): ProductClass
+  + hasNext(): boolean
+}
+class ProductIteratorClass {
+  + ProductIteratorClass(ProductClass[], int): 
+  + hasNext(): boolean
+  + next(): ProductClass
+}
+
+BillClass             -[#008200,dashed]-^  Bill                 
+BillClass            "1" *-[#595959,plain]-> "customer\n1" CustomerClass        
+BillClass             -[#595959,dashed]->  CustomerClass        : "«create»"
+BillClass            "1" *-[#595959,plain]-> "products\n*" ProductClass         
+BillClass             -[#595959,dashed]->  ProductClass         : "«create»"
+BillClass             -[#595959,dashed]->  ProductIteratorClass : "«create»"
+BillIteratorClass    "1" *-[#595959,plain]-> "bills\n*" BillClass            
+BillIteratorClass     -[#008200,dashed]-^  BillIterator         
+CashRegisterClass     -[#595959,dashed]->  BillClass            : "«create»"
+CashRegisterClass    "1" *-[#595959,plain]-> "bills\n*" BillClass            
+CashRegisterClass     -[#595959,dashed]->  BillIteratorClass    : "«create»"
+CashRegisterClass     -[#008200,dashed]-^  CashRegister         
+CustomerClass         -[#008200,dashed]-^  Customer             
+Main                  -[#595959,dashed]->  CashRegisterClass    : "«create»"
+ProductClass          -[#008200,dashed]-^  Product              
+ProductIteratorClass "1" *-[#595959,plain]-> "products\n*" ProductClass         
+ProductIteratorClass  -[#008200,dashed]-^  ProductIterator      
+@enduml
